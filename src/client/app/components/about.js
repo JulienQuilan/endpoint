@@ -10,6 +10,11 @@ import {Primary, PrimaryInline} from '../../styles/fonts';
 import BackNav from './ui/back-nav';
 import Link from './ui/link';
 
+/**
+ * Purely presentational about page.
+ *
+ * @constructor
+ */
 const About = () => (
   <Container>
     <Helmet title="about - endpoint" />

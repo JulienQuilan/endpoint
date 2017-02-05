@@ -18,7 +18,7 @@ export const sizes = {
  *
  * @param {String} size Name of the font size, or a literal font size.
  * @param {String} color Name of the color, or a literal hex color ode.
- * @param {Boolean} bold True to use the bold font family; false otherwise.
+ * @param {Boolean|String} bold True to use the bold font family; false otherwise.
  */
 export const primaryFontStyle = (size = 'iota', color = 'gray80', bold = false) => ({
   fontFamily: bold ? 'dejavu-sans-mono--bold' : 'dejavu-sans-mono--regular',

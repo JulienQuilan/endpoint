@@ -10,12 +10,21 @@ import {transition} from '../../../styles/general';
  */
 export default class TextArea extends React.Component {
   /**
-   * Retrieve the current value of the input field.
+   * Retrieve the current value of the textarea.
    *
-   * @returns {String} The current value of the input field.
+   * @returns {String} The current value of the textarea.
    */
   getValue() {
     return this.textarea.value;
+  }
+
+  /**
+   * Set the value of the textarea.
+   *
+   * @param {String} text String to which the textarea value should be set.
+   */
+  setValue(text) {
+    this.textarea.value = text;
   }
 
   render() {

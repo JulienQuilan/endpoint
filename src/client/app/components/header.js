@@ -30,10 +30,10 @@ const Header = () => {
 
   return (
     <Margin size="huge" bottom>
-      <Title onClick={redirectToHome}>
+      <Title className="title" onClick={redirectToHome}>
         {title}
       </Title>
-      <Primary size="epsilon" color="gray60">
+      <Primary className="subtitle" size="epsilon" color="gray60">
         {subtitle}
       </Primary>
     </Margin>

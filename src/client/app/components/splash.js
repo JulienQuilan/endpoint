@@ -13,10 +13,7 @@ export default class Splash extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      display: 'block',
-      opacity: '0'
-    };
+    this.state = {opacity: '0'};
   }
 
   componentWillUnmount() {
@@ -24,7 +21,7 @@ export default class Splash extends React.Component {
   }
 
   render() {
-    const {display, opacity} = this.state;
+    const {opacity} = this.state;
 
     this.timeout = window.setTimeout(() => this.setState({opacity: '0.7'}), 100);
 
@@ -32,7 +29,7 @@ export default class Splash extends React.Component {
       <div
         style={{
           backgroundColor: colors.white,
-          display,
+          display: 'block',
           height: '100vh',
           opacity,
           position: 'fixed',

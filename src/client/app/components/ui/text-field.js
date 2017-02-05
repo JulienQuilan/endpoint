@@ -18,6 +18,15 @@ export default class TextField extends React.Component {
     return this.input.value;
   }
 
+  /**
+   * Set the value of the input field.
+   *
+   * @param {String} text String to which the input value should be set.
+   */
+  setValue(text) {
+    this.input.value = text;
+  }
+
   render() {
     const {size, color, bold, ...props} = this.props;
 

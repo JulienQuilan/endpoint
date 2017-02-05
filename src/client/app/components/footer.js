@@ -1,7 +1,7 @@
 import React from 'react';
 import {styled} from 'styletron-react';
 
-import {marginStyle} from '../../styles/margin';
+import {MarginInline, marginStyle} from '../../styles/margin';
 import {primaryFontStyle} from '../../styles/fonts';
 
 import Link from './ui/link';
@@ -22,14 +22,14 @@ const Footer = ({win}) => {
 
   return (
     <StyledFooter>
-      <span style={marginStyle('default', 'right')}>
+      <MarginInline right>
         <Link
           to="/about"
           style={primaryFontStyle('kilo', null)}
         >
           about
         </Link>
-      </span>
+      </MarginInline>
 
       <Link
         href="https://github.com/LINKIWI/endpoint"

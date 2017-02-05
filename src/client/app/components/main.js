@@ -16,16 +16,19 @@ import TextField from './ui/text-field';
 
 import browser from '../util/browser';
 
-const ERROR_INVALID_JSON = 'errorInvalidJSON';
 const ERROR_NETWORK_FAILURE = 'errorNetworkFailure';
 const ERROR_TOO_LARGE = 'errorTooLarge';
 const ERROR_CONFLICT = 'errorConflict';
 const ERROR_SERVER = 'errorServer';
 const WARN_INCOMPLETE_PARAMS = 'warnIncompleteParams';
+const WARN_INVALID_JSON = 'errorInvalidJSON';
 const WARN_INVALID_STATUS_CODE = 'warnInvalidStatusCode';
 const WARN_INVALID_DELAY = 'warnInvalidDelay';
 
-class Main extends React.Component {
+/**
+ * Main interface for submitting a new endpoint.
+ */
+export class Main extends React.Component {
   constructor() {
     super();
 
@@ -52,14 +55,14 @@ class Main extends React.Component {
 
     // Validation that the input data is valid JSON
     if (!isJSON.strict(data)) {
-      return this.setState({error: ERROR_INVALID_JSON});
+      return this.setState({warn: WARN_INVALID_JSON});
     }
 
     // Validation that the status code and delay are proper integers
     if (statusCodeRaw && Number.isNaN(statusCode)) {
       return this.setState({warn: WARN_INVALID_STATUS_CODE});
     }
-    if (delayRaw && Number.isNaN(delay)) {
+    if (delayRaw && (Number.isNaN(delay) || delay < 0 || delay > 60000)) {
       return this.setState({warn: WARN_INVALID_DELAY});
     }
 
@@ -100,16 +103,17 @@ class Main extends React.Component {
     const {error, warn} = this.state;
 
     const errorMessages = {
-      [ERROR_INVALID_JSON]: 'the json data does not appear to be valid.',
       [ERROR_NETWORK_FAILURE]: 'there was an undefined network failure. try again?',
       [ERROR_TOO_LARGE]: 'the server rejected your json data because it was too large.',
       [ERROR_CONFLICT]: 'an endpoint with this name already exists. please choose another name.',
       [ERROR_SERVER]: 'there was an undefined server-side error. sorry.'
     };
     const warnMessages = {
+      [WARN_INVALID_JSON]: 'the json data does not appear to be valid.',
       [WARN_INCOMPLETE_PARAMS]: 'both the api endpoint url and json data must be supplied.',
       [WARN_INVALID_STATUS_CODE]: 'the http status code is invalid.',
-      [WARN_INVALID_DELAY]: 'the requested endpoint delay is invalid.'
+      [WARN_INVALID_DELAY]: 'the requested endpoint delay is invalid. please choose a number ' +
+        'between 0 and 60000.'
     };
 
     if (error) {
@@ -210,7 +214,11 @@ class Main extends React.Component {
           </div>
         </Margin>
 
-        <Button onClick={this.handleSubmit.bind(this)} style={{width: '100%'}}>
+        <Button
+          className="btn-submit-endpoint"
+          onClick={this.handleSubmit.bind(this)}
+          style={{width: '100%'}}
+        >
           <Primary color="gray5" bold>Submit</Primary>
         </Button>
       </Container>

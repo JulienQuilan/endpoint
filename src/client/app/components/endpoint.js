@@ -25,7 +25,10 @@ import browser from '../util/browser';
 const ERROR_GENERIC = 'errorGeneric';
 const ERROR_NONEXISTENT_ENDPOINT = 'errorNonexistentEndpoint';
 
-class Endpoint extends React.Component {
+/**
+ * Endpoint metadata page shown after successful submission of an endpoint.
+ */
+export class Endpoint extends React.Component {
   constructor() {
     super();
 
@@ -42,8 +45,8 @@ class Endpoint extends React.Component {
       request.post({
         url: browser.parseURL().href,
         json: {}
-      }, (err, resp = {}, responseJSON = {}) => {
-        if (err && !responseJSON.success) {
+      }, (err, resp = {}, responseJSON = null) => {
+        if (err && (responseJSON === null)) {
           if (resp.statusCode === 404) {
             this.setState({error: ERROR_NONEXISTENT_ENDPOINT});
             return done();
@@ -117,6 +120,7 @@ class Endpoint extends React.Component {
           </span>
           <span>
             <Paste
+              className="btn-copy-endpoint"
               onClick={this.handleClipboardCopy.bind(this)}
               style={{
                 color: colors.gray70,
@@ -143,7 +147,7 @@ class Endpoint extends React.Component {
           {
             !responseJSON && (
               <Margin size="small" bottom>
-                <Button onClick={this.handleTestEndpoint.bind(this)}>
+                <Button className="btn-test-endpoint" onClick={this.handleTestEndpoint.bind(this)}>
                   <Primary color="gray5" bold>Test Endpoint</Primary>
                 </Button>
               </Margin>

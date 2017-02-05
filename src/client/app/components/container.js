@@ -16,6 +16,7 @@ const sideMarginSize = (width) => {
   }
   return spacing.enormous;
 };
+
 const verticalMarginSize = (width) => {
   if (width < 350) {
     return spacing.default;

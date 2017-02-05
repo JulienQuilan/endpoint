@@ -6,7 +6,7 @@ import './browser';
 
 /* Main tests */
 import './server';
-// import './client';  // TODO
+import './client';
 
 /*
  Import all known source files as part of the test simply to ensure that they appear in the test
@@ -16,10 +16,10 @@ recursive(
   path.join(__dirname, '../src'),
   [(filePath, stats) => {
     // Criteria for ignoring this file
-    const isClient = filePath.indexOf('src/client') !== -1;
+    const isDist = filePath.endsWith('dist/bundle.js');
     const isNotSource = !filePath.endsWith('.js') && !stats.isDirectory();
     const isServer = filePath.endsWith('src/server/index.js');
-    return isClient || isNotSource || isServer;
+    return isDist || isNotSource || isServer;
   }],
   (err, files) => {
     if (err) {

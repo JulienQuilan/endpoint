@@ -39,8 +39,8 @@ class Endpoint extends React.Component {
       request.post({
         url: browser.parseURL().href,
         json: {}
-      }, (err, resp = {}, responseJSON) => {
-        if (err || resp.statusCode !== 200) {
+      }, (err, resp = {}, responseJSON = {}) => {
+        if (err && !responseJSON.success) {
           if (resp.statusCode === 404) {
             this.setState({error: ERROR_NONEXISTENT_ENDPOINT});
             return done();

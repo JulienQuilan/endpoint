@@ -18,6 +18,7 @@ import browser from '../util/browser';
 
 const ERROR_INVALID_JSON = 'errorInvalidJSON';
 const ERROR_NETWORK_FAILURE = 'errorNetworkFailure';
+const ERROR_TOO_LARGE = 'errorTooLarge';
 const ERROR_CONFLICT = 'errorConflict';
 const ERROR_SERVER = 'errorServer';
 const WARN_INCOMPLETE_PARAMS = 'warnIncompleteParams';
@@ -77,6 +78,11 @@ class Main extends React.Component {
           return done();
         }
 
+        if (resp.statusCode === 413) {
+          this.setState({error: ERROR_TOO_LARGE});
+          return done();
+        }
+
         if (resp.statusCode === 500) {
           this.setState({error: ERROR_SERVER});
           return done();
@@ -96,6 +102,7 @@ class Main extends React.Component {
     const errorMessages = {
       [ERROR_INVALID_JSON]: 'the json data does not appear to be valid.',
       [ERROR_NETWORK_FAILURE]: 'there was an undefined network failure. try again?',
+      [ERROR_TOO_LARGE]: 'the server rejected your json data because it was too large.',
       [ERROR_CONFLICT]: 'an endpoint with this name already exists. please choose another name.',
       [ERROR_SERVER]: 'there was an undefined server-side error. sorry.'
     };

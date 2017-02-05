@@ -10,6 +10,9 @@ import extend from 'deep-extend';
  * @param {Object} res Express response object
  */
 function handler(ctx, req, res) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
   ctx.db.endpoint.findOne({name: req.params.endpoint}, (err, doc) => {
     if (err) {
       return res.error(500, 'Undefined database error.');

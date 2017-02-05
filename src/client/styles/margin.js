@@ -21,10 +21,11 @@ export const spacing = {
  */
 export const marginStyle = (size = 'default', dimensions = ['all']) => {
   const forDimension = (dimension) =>
-    ((isArray(dimensions) ? dimensions : [dimensions]).includes(dimension)) ? spacing[size] : '0';
+    ((isArray(dimensions) ? dimensions : [dimensions]).includes(dimension)) ?
+      (spacing[size] || size) : '0';
 
   return {
-    padding: [
+    margin: [
       forDimension('top'),
       forDimension('right'),
       forDimension('bottom'),

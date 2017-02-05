@@ -12,12 +12,12 @@ import Link from './ui/link';
  * @returns {XML} React element.
  * @constructor
  */
-const Footer = () => {
+const Footer = ({win}) => {
   const StyledFooter = styled('div', {
     bottom: '0',
-    height: '40px',
-    position: 'fixed',
-    width: '100%'
+    width: '100%',
+    ...((win.height <= 800) && marginStyle('huge', 'top')),
+    ...((win.height > 800) && {height: '40px', position: 'fixed'})
   });
 
   return (

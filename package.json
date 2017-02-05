@@ -53,6 +53,7 @@
     "react-loading-hoc": "0.0.2",
     "react-router": "^2.6.1",
     "react-syntax-highlighter": "^4.0.1",
+    "react-window-state": "^0.2.0",
     "styletron": "^2.5.1",
     "styletron-client": "^2.5.1",
     "styletron-react": "^2.5.2",

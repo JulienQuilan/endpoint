@@ -26,8 +26,15 @@ export const primaryFontStyle = (size = 'iota', color = 'gray80', bold = false) 
   color: colors[color] || color
 });
 
+const createStyledFont = (element) => styled(element,
+  ({bold, size = 'iota', color = 'gray80'}) => primaryFontStyle(size, color, bold));
+
 /**
  * Component for a styled paragraph element.
  */
-export const Primary = styled('p',
-  ({bold, size = 'iota', color = 'gray80'}) => primaryFontStyle(size, color, bold));
+export const Primary = createStyledFont('p');
+
+/**
+ * Component for a styled span element.
+ */
+export const PrimaryInline = createStyledFont('span');

@@ -33,14 +33,22 @@ export const marginStyle = (size = 'default', dimensions = ['all']) => {
   };
 };
 
+const createStyledMargin = (element) =>
+  styled(element, ({size = 'default', all, top, bottom, left, right}) =>
+    marginStyle(size, [
+      all && 'all',
+      top && 'top',
+      bottom && 'bottom',
+      left && 'left',
+      right && 'right'
+    ].filter(Boolean)));
+
 /**
  * Component for a div with the specified margins.
  */
-export const Margin = styled('div', ({size = 'default', all, top, bottom, left, right}) =>
-  marginStyle(size, [
-    all && 'all',
-    top && 'top',
-    bottom && 'bottom',
-    left && 'left',
-    right && 'right'
-  ].filter(Boolean)));
+export const Margin = createStyledMargin('div');
+
+/**
+ * Component for a span with the specified margins.
+ */
+export const MarginInline = createStyledMargin('span');

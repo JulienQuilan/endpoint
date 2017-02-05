@@ -1,3 +1,4 @@
+import {Link as RouterLink} from 'react-router';
 import React from 'react';
 import {styled} from 'styletron-react';
 
@@ -14,7 +15,7 @@ import {transition} from '../../../styles/general';
 const Link = (props) => {
   const {href, children} = props;
 
-  const A = styled(href ? 'a' : Link, {
+  const A = styled(href ? 'a' : RouterLink, {
     color: colors.primary,
     opacity: '0.8',
     textDecoration: 'none',

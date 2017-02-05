@@ -1,13 +1,13 @@
 import {atomOneDark} from 'react-syntax-highlighter/dist/styles';
 import copy from 'copy-to-clipboard';
+import Helmet from 'react-helmet';
 import LoadingHOC from 'react-loading-hoc';
 import Paste from 'react-icons/lib/md/content-paste';
 import React from 'react';
 import request from 'browser-request';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/light';
 
-import Container from './layout/container';
-import Header from './header';
+import Container from './container';
 import {Primary, primaryFontStyle} from '../../styles/fonts';
 import {Margin, marginStyle} from '../../styles/margin';
 import {colors} from '../../styles/colors';
@@ -92,9 +92,9 @@ class Endpoint extends React.Component {
 
     return (
       <Container>
-        {isLoading && <Splash />}
+        <Helmet title="success - endpoint" />
 
-        <Header />
+        {isLoading && <Splash />}
 
         <SuccessAlert
           title={'your endpoint was submitted successfully!'}

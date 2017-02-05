@@ -1,10 +1,10 @@
-import LoadingHOC from 'react-loading-hoc';
+import Helmet from 'react-helmet';
 import isJSON from 'is-json';
+import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
-import Container from './layout/container';
-import Header from './header';
+import Container from './container';
 import {Primary, primaryFontStyle} from '../../styles/fonts';
 import {Margin} from '../../styles/margin';
 import Splash from './splash';
@@ -131,9 +131,9 @@ class Main extends React.Component {
 
     return (
       <Container>
-        {isLoading && <Splash />}
+        <Helmet title="new endpoint - endpoint" />
 
-        <Header />
+        {isLoading && <Splash />}
 
         {this.renderAlert()}
 

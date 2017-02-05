@@ -1,0 +1,58 @@
+/* global window */
+
+import React from 'react';
+import {SquareLoader} from 'halogen';
+
+import {colors} from '../../styles/colors';
+import {transition} from '../../styles/general';
+
+/**
+ * Full-screen splash component used as a loading indicator.
+ */
+export default class Splash extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      display: 'block',
+      opacity: '0'
+    };
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.timeout);
+  }
+
+  render() {
+    const {display, opacity} = this.state;
+
+    this.timeout = window.setTimeout(() => this.setState({opacity: '0.7'}), 100);
+
+    return (
+      <div
+        style={{
+          backgroundColor: colors.white,
+          display,
+          height: '100vh',
+          opacity,
+          position: 'fixed',
+          width: '100%',
+          zIndex: 1,
+          transition
+        }}
+      >
+        <div
+          style={{
+            left: '50%',
+            position: 'fixed',
+            transform: 'translateX(-50%) translateY(-50%)',
+            top: '50%',
+            zIndex: 2
+          }}
+        >
+          <SquareLoader color={colors.primary} />
+        </div>
+      </div>
+    );
+  }
+}

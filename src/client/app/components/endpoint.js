@@ -1,3 +1,6 @@
+/* global window */
+/* eslint-disable no-alert */
+
 import {atomOneDark} from 'react-syntax-highlighter/dist/styles';
 import copy from 'copy-to-clipboard';
 import Helmet from 'react-helmet';

@@ -131,7 +131,7 @@ class Main extends React.Component {
 
     return (
       <Container>
-        <Helmet title="new endpoint - endpoint" />
+        <Helmet title="endpoint" />
 
         {isLoading && <Splash />}
 

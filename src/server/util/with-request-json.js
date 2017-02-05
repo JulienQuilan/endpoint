@@ -9,7 +9,7 @@ import util from '../util';
  * endpoint's schema) JSON object.
  *
  * @param {Object} ctx Server-side request context.
- * @param {Function} endpoint Original endpoint handler function.
+ * @param {Object} endpoint Original endpoint handler export (containing the schema and handler).
  * @returns {Function} Higher-order handler function taking (req, res) as input.
  */
 function withRequestJSON(ctx, endpoint) {

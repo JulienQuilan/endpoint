@@ -5,7 +5,7 @@ import React from 'react';
 import request from 'browser-request';
 
 import Container from './container';
-import {Primary, primaryFontStyle} from '../../styles/fonts';
+import {Primary, PrimaryInline} from '../../styles/fonts';
 import {Margin} from '../../styles/margin';
 import Splash from './splash';
 
@@ -150,15 +150,25 @@ class Main extends React.Component {
               <Primary color="gray40" bold>api endpoint url</Primary>
             </Margin>
 
-            <span style={primaryFontStyle('epsilon')}>
-              {browser.parseURL().href}
-            </span>
-            <TextField
-              ref={(elem) => {
-                this.endpointField = elem;
-              }}
-              size="epsilon"
-            />
+            <div style={{display: 'table'}}>
+              <PrimaryInline size="epsilon" style={{
+                display: 'table-cell',
+                width: '1%',
+                whiteSpace: 'nowrap'
+              }}>
+                {browser.parseURL().href}
+              </PrimaryInline>
+              <TextField
+                ref={(elem) => {
+                  this.endpointField = elem;
+                }}
+                style={{
+                  display: 'table-cell',
+                  width: '100%'
+                }}
+                size="epsilon"
+              />
+            </div>
           </Margin>
 
           <Margin bottom>
@@ -178,7 +188,7 @@ class Main extends React.Component {
           </Margin>
 
           <div>
-            <span style={primaryFontStyle()}>response http status code: </span>
+            <PrimaryInline>response http status code: </PrimaryInline>
             <TextField
               ref={(elem) => {
                 this.statusCodeField = elem;
@@ -189,7 +199,7 @@ class Main extends React.Component {
           </div>
 
           <div>
-            <span style={primaryFontStyle()}>response delay (ms): </span>
+            <PrimaryInline>response delay (ms): </PrimaryInline>
             <TextField
               ref={(elem) => {
                 this.delayField = elem;

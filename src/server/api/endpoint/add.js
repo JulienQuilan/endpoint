@@ -1,6 +1,7 @@
 const schema = {
   properties: {
     name: {
+      // TODO impose max length, URL-safe
       type: 'string',
       minLength: 1
     },

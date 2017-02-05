@@ -9,4 +9,4 @@ npm install
 
 npm run lint
 npm run build
-# npm run cover
+npm run cover

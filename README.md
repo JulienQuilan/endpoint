@@ -1,5 +1,8 @@
 # endpoint
 
+[![Build Status](https://travis-ci.org/LINKIWI/endpoint.svg?branch=master)](https://travis-ci.org/LINKIWI/endpoint)
+[![Coverage Status](https://coveralls.io/repos/github/LINKIWI/endpoint/badge.svg?branch=master)](https://coveralls.io/github/LINKIWI/endpoint?branch=master)
+
 Super simple mock API endpoints for static JSON data
 
 ```bash

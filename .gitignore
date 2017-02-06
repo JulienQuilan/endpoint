@@ -15,5 +15,6 @@ coverage/
 db/
 
 # Secrets
+src/client/config/secrets.js
 config/secrets.js
 .coveralls.yml

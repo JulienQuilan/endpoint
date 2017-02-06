@@ -1,2 +1,3 @@
 src/client/static/dist
+src/client/config/secrets.js
 config/secrets.js

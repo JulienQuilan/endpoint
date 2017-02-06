@@ -120,7 +120,40 @@ test('Conflicting endpoint name', (t) => {
   t.ok(requestStub.called, 'Network request is made');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'an endpoint with this name already exists. ' +
-    'please choose another name.', 'Message about invalid delay');
+    'please choose another name.', 'Message about a name conflict');
+
+  request.put.restore();
+  t.end();
+});
+
+test('Bad endpoint name', (t) => {
+  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
+    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
+    t.deepEqual(opts.json, {
+      name: 'endpoint',
+      data: {}
+    }, 'JSON request body is correct');
+
+    return cb(null, {statusCode: 400});
+  });
+  const main = mountWithStyletron(
+    <Main
+      isLoading={false}
+      loading={(func) => func(() => {})}
+    />
+  );
+
+  const node = main.find(Main).node;
+  node.endpointField.setValue('endpoint');
+  node.jsonDataField.setValue('{}');
+
+  main.find('.btn-submit-endpoint').simulate('click');
+
+  t.ok(requestStub.called, 'Network request is made');
+  t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
+  t.equal(main.find('ErrorAlert').props().message, 'the endpoint name must be between 1 and 30 ' +
+    'characters in length, and must consist only of letters, numbers, dashes, and underscores.',
+    'Message about invalid endpoint name');
 
   request.put.restore();
   t.end();
@@ -156,13 +189,13 @@ test('JSON request data too large', (t) => {
   t.ok(requestStub.called, 'Network request is made');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'the server rejected your json data because ' +
-    'it was too large.', 'Message about invalid delay');
+    'it was too large.', 'Message about JSON data that is too large');
 
   request.put.restore();
   t.end();
 });
 
-test('JSON request data too large', (t) => {
+test('Generic internal server error', (t) => {
   const requestStub = sinon.stub(request, 'put', (opts, cb) => {
     t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
     t.deepEqual(opts.json, {
@@ -192,13 +225,13 @@ test('JSON request data too large', (t) => {
   t.ok(requestStub.called, 'Network request is made');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'there was an undefined server-side error. ' +
-    'sorry.', 'Message about invalid delay');
+    'sorry.', 'Message about an undefined server-side error');
 
   request.put.restore();
   t.end();
 });
 
-test('JSON request data too large', (t) => {
+test('Undefined network failure', (t) => {
   const requestStub = sinon.stub(request, 'put', (opts, cb) => {
     t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
     t.deepEqual(opts.json, {
@@ -228,7 +261,7 @@ test('JSON request data too large', (t) => {
   t.ok(requestStub.called, 'Network request is made');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'there was an undefined network failure. ' +
-    'try again?', 'Message about invalid delay');
+    'try again?', 'Message about a network failure');
 
   request.put.restore();
   t.end();

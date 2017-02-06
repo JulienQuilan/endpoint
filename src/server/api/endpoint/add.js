@@ -1,9 +1,10 @@
 const schema = {
   properties: {
     name: {
-      // TODO impose max length, URL-safe
       type: 'string',
-      minLength: 1
+      minLength: 1,
+      maxLength: 30,
+      pattern: '^[a-zA-Z0-9-_]+$'
     },
     data: {
       type: 'object'

@@ -18,6 +18,7 @@ import browser from '../util/browser';
 
 const ERROR_NETWORK_FAILURE = 'errorNetworkFailure';
 const ERROR_TOO_LARGE = 'errorTooLarge';
+const ERROR_BAD_INPUT = 'errorBadInput';
 const ERROR_CONFLICT = 'errorConflict';
 const ERROR_SERVER = 'errorServer';
 const WARN_INCOMPLETE_PARAMS = 'warnIncompleteParams';
@@ -76,6 +77,11 @@ export class Main extends React.Component {
       }
     }, (err, resp = {}, body = {}) => {
       if (err || resp.statusCode !== 201 || !body.success) {
+        if (resp.statusCode === 400) {
+          this.setState({error: ERROR_BAD_INPUT});
+          return done();
+        }
+
         if (resp.statusCode === 409) {
           this.setState({error: ERROR_CONFLICT});
           return done();
@@ -106,6 +112,8 @@ export class Main extends React.Component {
       [ERROR_NETWORK_FAILURE]: 'there was an undefined network failure. try again?',
       [ERROR_TOO_LARGE]: 'the server rejected your json data because it was too large.',
       [ERROR_CONFLICT]: 'an endpoint with this name already exists. please choose another name.',
+      [ERROR_BAD_INPUT]: 'the endpoint name must be between 1 and 30 characters in length, and ' +
+        'must consist only of letters, numbers, dashes, and underscores.',
       [ERROR_SERVER]: 'there was an undefined server-side error. sorry.'
     };
     const warnMessages = {

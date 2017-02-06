@@ -24,7 +24,7 @@ const Header = () => {
     ':hover': {
       color: colors.primary
     },
-    transition,
+    ...transition(),
     ...primaryFontStyle('delta')
   });
 

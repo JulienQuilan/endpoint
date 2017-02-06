@@ -37,7 +37,6 @@ export default class TextArea extends React.Component {
       height: '200px',
       opacity: '0.7',
       padding: '3px 1px',
-      transition,
       width: '100%',
       ':hover': {
         opacity: '0.9'
@@ -46,7 +45,8 @@ export default class TextArea extends React.Component {
         opacity: '1.0',
         borderBottom: `1px solid ${colors.primary}`
       },
-      ...primaryFontStyle(size, color, bold)
+      ...primaryFontStyle(size, color, bold),
+      ...transition()
     });
 
     return (

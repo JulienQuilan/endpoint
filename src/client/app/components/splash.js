@@ -35,7 +35,7 @@ export default class Splash extends React.Component {
           position: 'fixed',
           width: '100%',
           zIndex: 1,
-          transition
+          ...transition()
         }}
       >
         <div

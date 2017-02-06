@@ -19,7 +19,6 @@ const Link = (props) => {
     color: colors.primary,
     opacity: '0.8',
     textDecoration: 'none',
-    transition,
     ':link': {
       color: colors.primary
     },
@@ -30,7 +29,8 @@ const Link = (props) => {
     ':active': {
       borderBottom: `2px solid ${colors.gray80}`,
       color: colors.gray80
-    }
+    },
+    ...transition()
   });
 
   return (

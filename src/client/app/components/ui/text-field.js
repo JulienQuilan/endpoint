@@ -35,7 +35,6 @@ export default class TextField extends React.Component {
       borderBottom: `1px solid ${colors.primaryLight}`,
       opacity: '0.7',
       padding: '3px 1px',
-      transition,
       ':hover': {
         opacity: '0.9'
       },
@@ -43,7 +42,8 @@ export default class TextField extends React.Component {
         opacity: '1.0',
         borderBottom: `1px solid ${colors.primary}`
       },
-      ...primaryFontStyle(size, color, bold)
+      ...primaryFontStyle(size, color, bold),
+      ...transition()
     });
 
     return (

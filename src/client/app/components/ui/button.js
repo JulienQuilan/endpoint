@@ -31,7 +31,6 @@ export default class Button extends React.Component {
       pointerEvents: disabled ? 'none' : 'inherit',
       textDecoration: 'none',
       textTransform: 'uppercase',
-      transition,
       ':hover': {
         opacity: '1.0'
       },
@@ -43,7 +42,8 @@ export default class Button extends React.Component {
       },
       '::-moz-focus-inner': {
         border: '0'
-      }
+      },
+      ...transition()
     });
 
     return (

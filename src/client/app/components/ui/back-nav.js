@@ -12,13 +12,13 @@ const StyledBackNav = styled('div', {
   color: colors.primary,
   cursor: 'pointer',
   opacity: '0.7',
-  transition,
   ':hover': {
     opacity: '1.0'
   },
   ':focus': {
     opacity: '1.0'
-  }
+  },
+  ...transition()
 });
 
 /**

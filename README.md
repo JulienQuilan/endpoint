@@ -23,6 +23,10 @@ $ curl http://endpoint.example.com/endpoint/my-endpoint
 }
 ```
 
+## Screencast
+
+![Screencast](https://linkiwi.github.io/endpoint/static/screencast.gif)
+
 ## Overview
 
 `endpoint` is a self-hosted microservice for quickly creating configurable mock HTTP endpoints that return static JSON data. It's intended to be a super simple, zero-configuration, zero-server-overhead way of associating some JSON with a URL in order to test webhooks or client libraries during development.

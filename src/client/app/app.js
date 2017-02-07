@@ -3,9 +3,9 @@
 import bash from 'highlight.js/lib/languages/bash';
 import {injectStyle} from 'styletron-utils';
 import js from 'highlight.js/lib/languages/javascript';
+import Raven from 'raven-js';
 import React from 'react';
 import {registerLanguage} from 'react-syntax-highlighter/dist/light';
-import Raven from 'raven-js';
 import {Router, browserHistory} from 'react-router';
 import Styletron from 'styletron-client';
 import {StyletronProvider} from 'styletron-react';

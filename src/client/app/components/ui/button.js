@@ -40,9 +40,6 @@ export default class Button extends React.Component {
       ':active': {
         opacity: '1.0'
       },
-      '::-moz-focus-inner': {
-        border: '0'
-      },
       ...transition()
     });
 

@@ -5,7 +5,7 @@ import test from 'tape';
 import {colors, BackgroundColor, Color} from '../../../src/client/styles/colors';
 
 test('Expected color definitions', (t) => {
-  t.equal(Object.keys(colors).length, 36, 'Number of colors is correct');
+  t.equal(Object.keys(colors).length, 39, 'Number of colors is correct');
   t.ok(colors.primary, 'A primary color is defined');
   t.ok(colors.primaryLight, 'A primary light color is defined');
   t.ok(colors.primaryDark, 'A primary dark color is defined');

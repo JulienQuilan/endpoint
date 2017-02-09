@@ -26,13 +26,16 @@ const others = {
   lightOrange: '#e69f97',
   orange: '#e74c3c',
   yellow: '#b49b5c',
-  lightYellow: '#fcf8e3'
+  lightYellow: '#fcf8e3',
+  lightPurple: '#d8bce8',
+  purple: '#9b59b6',
+  darkPurple: '#8e44ad'
 };
 
 const primary = {
-  primary: others.blue,
-  primaryLight: others.lightBlue,
-  primaryDark: others.darkBlue
+  primary: others.purple,
+  primaryLight: others.lightPurple,
+  primaryDark: others.darkPurple
 };
 
 export const colors = {...gray, ...others, ...primary};

@@ -1,4 +1,6 @@
-import path from 'path';
+import fs from 'fs';
+
+const index = fs.readFileSync('src/client/static/dist/index.html');
 
 /**
  * Main handler for serving client views.
@@ -8,7 +10,8 @@ import path from 'path';
  * @param {Object} res Express response object
  */
 function handler(ctx, req, res) {
-  return res.render(path.resolve(__dirname, '../../client/templates/index'));
+  res.setHeader('content-type', 'text/html');
+  return res.send(index);
 }
 
 export default handler;

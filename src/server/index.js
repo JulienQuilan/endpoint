@@ -22,9 +22,6 @@ app.disable('x-powered-by');
 const ctx = new Context();
 raven.config(secrets.sentryDSN).install();
 
-/* Templating engine */
-app.set('view engine', 'pug');
-
 /* Trust production reverse proxy */
 app.set('trust proxy', true);
 

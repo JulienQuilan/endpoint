@@ -11,13 +11,17 @@ test('Handler serves client template', (t) => {
     }
   };
   const mockRes = {
-    render: sinon.spy()
+    setHeader: sinon.spy(),
+    send: sinon.spy()
   };
 
   handler(mockCtx, mockReq, mockRes);
 
-  const template = mockRes.render.getCalls()[0].args[0];
-  t.ok(template.endsWith('templates/index'), 'Regular template is rendered');
+  const html = mockRes.send.getCalls()[0].args[0].toString();
+
+  t.ok(mockRes.setHeader.calledWith('content-type', 'text/html'),
+    'Content-Type on response is set to HTML');
+  t.ok(html.startsWith('<!DOCTYPE html>'), 'HTML file contents are sent in response');
 
   t.end();
 });

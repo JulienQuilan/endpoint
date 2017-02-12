@@ -4,7 +4,8 @@
   "description": "Mock API endpoints with static JSON response data",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build-js",
+    "build": "npm run build-js && npm run build-html",
+    "build-html": "pug src/client/templates/index.pug -o src/client/static/dist",
     "build-js": "mkdir -p src/client/static/dist && webpack --config config/webpack.js",
     "build-js-watch": "npm run build-js -- --watch --colors",
     "start": "node index.js",
@@ -46,7 +47,7 @@
     "is-json": "^2.0.1",
     "morgan": "^1.7.0",
     "nedb": "^1.8.0",
-    "pug": "^2.0.0-beta6",
+    "pug": "^2.0.0-beta9",
     "range": "0.0.3",
     "raven": "^1.1.1",
     "raven-js": "^3.10.0",

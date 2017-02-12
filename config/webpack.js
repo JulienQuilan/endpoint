@@ -28,6 +28,11 @@ module.exports = {
         test: /src\/.+.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.txt$/,
+        exclude: /node_modules/,
+        loader: 'raw-loader'
       }
     ]
   },

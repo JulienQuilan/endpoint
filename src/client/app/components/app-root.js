@@ -2,6 +2,8 @@ import csjs from 'csjs-inject';
 import Favicon from 'react-favicon';
 import React from 'react';
 
+import fonts from '../../resources/blobs/fonts';
+
 /**
  * On client-side application initialization, inject global CSS styles into the document head.
  * WARNING: The operations taken by this function are *stateful* and *have side effects*. This
@@ -23,12 +25,14 @@ function injectGlobalStyles() {
   csjs`
   @font-face {
     font-family: 'dejavu-sans-mono--regular';
-    src: url('/static/fonts/deja-vu-sans-mono--regular.ttf');
+    src: url(data:application/x-font-ttf;base64,${fonts.dejavuSansMonoRegular}),
+         url('/static/fonts/deja-vu-sans-mono--regular.ttf');
   }
 
   @font-face {
     font-family: 'dejavu-sans-mono--bold';
-    src: url('/static/fonts/deja-vu-sans-mono--bold.ttf');
+    src: url(data:application/x-font-ttf;base64,${fonts.dejavuSansMonoBold}),
+         url('/static/fonts/deja-vu-sans-mono--bold.ttf');
   }
   `;
 

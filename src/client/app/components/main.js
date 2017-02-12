@@ -168,7 +168,7 @@ export class Main extends React.Component {
                 width: '1%',
                 whiteSpace: 'nowrap'
               }}>
-                {browser.parseURL().href}
+                {browser.parseURL().href}endpoint/
               </PrimaryInline>
               <TextField
                 ref={(elem) => {

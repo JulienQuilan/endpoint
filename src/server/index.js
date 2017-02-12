@@ -32,7 +32,7 @@ app.use('/static', Express.static(path.resolve(__dirname, '../client/static')));
 app.use(raven.requestHandler());
 app.use(morgan('combined'));
 app.use(cookieParser());
-app.use(bodyParser.json({type: '*/*'}));
+app.use(bodyParser.json({type: '*/*', limit: '10mb'}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(statusCat());
 app.use(middleware.response.bind(null, ctx));

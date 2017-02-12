@@ -53,20 +53,24 @@ test('Undefined database lookup error', (t) => {
   t.end();
 });
 
-test('Undefined database lookup error', (t) => {
+test('Successful endpoint addition', (t) => {
   const mockCtx = {
     db: {
       endpoint: {
         insert(doc, cb) {
-          t.deepEqual(doc, {doc: true}, 'JSON data inserted into database is correct');
+          t.deepEqual(doc, {name: 'name', doc: true},
+            'JSON data inserted into database is correct');
 
           return cb();
         }
       }
+    },
+    cache: {
+      set: sinon.spy()
     }
   };
   const mockReq = {
-    json: {doc: true}
+    json: {name: 'name', doc: true}
   };
   const mockRes = {
     error: sinon.spy(),
@@ -75,8 +79,10 @@ test('Undefined database lookup error', (t) => {
 
   add.handler(mockCtx, mockReq, mockRes);
 
+  t.ok(mockCtx.cache.set.calledWith('name', mockReq.json), 'Data is cached in-memory');
   t.notOk(mockRes.error.called, 'Request does not error');
-  t.ok(mockRes.success.calledWith({doc: true}), 'Input JSON is sent back to the user');
+  t.ok(mockRes.success.calledWith({name: 'name', doc: true}),
+    'Input JSON is sent back to the user');
 
   t.end();
 });

@@ -20,3 +20,14 @@ test('Database is initialized', (t) => {
   Datastore.prototype.loadDatabase.restore();
   t.end();
 });
+
+test('Cache is initialized', (t) => {
+  sinon.stub(Datastore.prototype, 'loadDatabase');
+
+  const ctx = new Context();
+
+  t.ok(ctx.cache.set, 'Cache layer exposes a set method');
+
+  Datastore.prototype.loadDatabase.restore();
+  t.end();
+});

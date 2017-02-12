@@ -43,6 +43,8 @@ function handler(ctx, req, res) {
       }
     }
 
+    ctx.cache.set(req.json.name, req.json);
+
     return res.success(req.json, 201);
   });
 }

@@ -1,4 +1,5 @@
 import Datastore from 'nedb';
+import LRU from 'lru-cache';
 import path from 'path';
 
 /**
@@ -10,6 +11,7 @@ import path from 'path';
  */
 function Context() {
   this.db = this.initDB();
+  this.cache = this.initCache();
 }
 
 /**
@@ -25,6 +27,21 @@ Context.prototype.initDB = function initDB() {
   endpoint.ensureIndex({fieldName: 'name', unique: true});
 
   return {endpoint};
+};
+
+/**
+ * Initialize the endpoint data cache layer. This function will also warm the cache with all
+ * endpoints currently in the datastore.
+ *
+ * @returns {Object} Instance of LRU with database-stored endpoints already in the cache.
+ */
+Context.prototype.initCache = function initCache() {
+  const cache = new LRU({max: 1000});
+
+  // Cache warming with endpoints already in the datastore
+  this.db.endpoint.find({}, (_, docs = []) => docs.forEach((doc) => cache.set(doc.name, doc)));
+
+  return cache;
 };
 
 export default Context;

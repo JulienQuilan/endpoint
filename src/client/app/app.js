@@ -1,6 +1,7 @@
-/* global document */
+/* global config, document */
 
 import bash from 'highlight.js/lib/languages/bash';
+import dottie from 'dottie';
 import {injectStyle} from 'styletron-utils';
 import js from 'highlight.js/lib/languages/javascript';
 import Raven from 'raven-js';
@@ -11,10 +12,9 @@ import Styletron from 'styletron-client';
 import {StyletronProvider} from 'styletron-react';
 
 import routes from './routes';
-import secrets from '../config/secrets';
 
 // Client-side Sentry initialization
-Raven.config(secrets.sentryDSN).install();
+Raven.config(dottie.get(config, 'sentry.dsn')).install();
 
 // Syntax highlighting initialization
 registerLanguage('bash', bash);

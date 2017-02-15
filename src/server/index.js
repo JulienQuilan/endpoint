@@ -9,10 +9,9 @@ import raven from 'raven';
 import statusCat from 'http-status-cats';
 
 import api from './api';
-import config from '../../config/common';
+import config from '../../config/server';
 import Context from './context';
 import middleware from './middleware';
-import secrets from '../../config/secrets';
 import view from './view';
 import util from './util';
 
@@ -20,7 +19,7 @@ import util from './util';
 const app = Express();
 app.disable('x-powered-by');
 const ctx = new Context();
-raven.config(secrets.sentryDSN).install();
+raven.config(config.sentry.dsn).install();
 
 /* Trust production reverse proxy */
 app.set('trust proxy', true);
@@ -47,7 +46,7 @@ app.get('*', view.main.bind(null, ctx));
 
 app.use(raven.errorHandler());
 
-const server = app.listen(process.env.PORT || config.app.port || 3000, () => {
+const server = app.listen(process.env.PORT || config.meta.port || 3000, () => {
   const port = server.address().port;
   console.log('Server is listening at %s', port);
 });

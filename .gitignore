@@ -1,6 +1,5 @@
 # IDE
 .idea/
-*.iml
 
 # Project artifacts
 src/client/static/dist/
@@ -15,6 +14,4 @@ coverage/
 db/
 
 # Secrets
-src/client/config/secrets.js
-config/secrets.js
-.coveralls.yml
+.env

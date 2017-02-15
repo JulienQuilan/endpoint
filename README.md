@@ -46,8 +46,6 @@ Endpoint JSON data is persistently stored on-disk and cached in-memory, complete
 #### Locally
 
 ```bash
-$ cp config/secrets.js.template config/secrets.js
-$ cp src/client/config/secrets.js.template src/client/config/secrets.js
 $ npm install
 $ npm run build
 $ npm run start
@@ -60,10 +58,6 @@ First, in the shell:
 
 ```bash
 $ cd /path/to/endpoint
-$ cp config/secrets.js.template config/secrets.js
-# Edit config/secrets.js to add your server Sentry DSN. If you don't use Sentry, you don't need to modify anything.
-$ cp src/client/config/secrets.js.template src/client/config/secrets.js
-# Edit src/client/config/secrets.js to add your client Sentry DSN. If you don't use Sentry, you don't need to modify anything.
 $ npm install
 $ NODE_ENV=production npm run build
 $ pm2 start index.js
@@ -88,3 +82,5 @@ A minimal Apache config:
     ProxyPassReverse / http://127.0.0.1:16540/
 </VirtualHost>
 ```
+
+*If your production infrastructure makes use of [Sentry](https://sentry.io/), you may optionally run the `build` and `start` scripts with the environment variables `SERVER_SENTRY_DSN` and `CLIENT_SENTRY_DSN` defined either in the shell or saved in `.env`.*

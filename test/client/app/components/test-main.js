@@ -1,3 +1,6 @@
+/* global window */
+
+import jsdom from 'jsdom';
 import React from 'react';
 import request from 'browser-request';
 import sinon from 'sinon';
@@ -280,6 +283,8 @@ test('Successful endpoint submission', (t) => {
 
     return cb(null, {statusCode: 201}, {success: true});
   });
+
+  jsdom.changeURL(window, 'https://endpoint.example.com/extraneous-path');
   const main = mountWithStyletron(
     <Main
       isLoading={false}
@@ -295,6 +300,8 @@ test('Successful endpoint submission', (t) => {
 
   main.find('.btn-submit-endpoint').simulate('click');
 
+  t.equal(main.find('.endpoint-prefix').props().children, 'https://endpoint.example.com/endpoint/',
+    'Endpoint prefix is parsed from browser URL');
   t.ok(requestStub.called, 'Network request is made');
   t.ok(pushStub.calledWith('/endpoint/endpoint'), 'Redirect to endpoint test page');
 

@@ -148,6 +148,9 @@ export class Main extends React.Component {
   render() {
     const {isLoading} = this.props;
 
+    const parsedURL = browser.parseURL();
+    const endpointPrefix = `${parsedURL.protocol}//${parsedURL.host}/endpoint/`;
+
     return (
       <Container>
         <Helmet title="endpoint" />
@@ -163,12 +166,16 @@ export class Main extends React.Component {
             </Margin>
 
             <div style={{display: 'table'}}>
-              <PrimaryInline size="epsilon" style={{
-                display: 'table-cell',
-                width: '1%',
-                whiteSpace: 'nowrap'
-              }}>
-                {browser.parseURL().href}endpoint/
+              <PrimaryInline
+                className="endpoint-prefix"
+                size="epsilon"
+                style={{
+                  display: 'table-cell',
+                  width: '1%',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {endpointPrefix}
               </PrimaryInline>
               <TextField
                 ref={(elem) => {

@@ -6,11 +6,12 @@
   "scripts": {
     "build": "npm run build-js && npm run build-html",
     "build-html": "pug src/client/templates/index.pug -o src/client/static/dist",
+    "build-html-watch": "npm run build-html -- --watch",
     "build-js": "mkdir -p src/client/static/dist && webpack --config config/webpack",
     "build-js-watch": "npm run build-js -- --watch --colors",
     "start": "node index.js",
     "start-watch": "nodemon index.js",
-    "dev": "concurrently --kill-others --prefix name --prefix-colors cyan.bold,yellow.bold --names HTTP,JS 'npm run start-watch' 'npm run build-js-watch'",
+    "dev": "concurrently --kill-others --prefix name --prefix-colors cyan.bold,yellow.bold,magenta.bold --names HTTP,JS,HTML 'npm run start-watch' 'npm run build-js-watch' 'npm run build-html-watch'",
     "lint": "eslint src test config",
     "test": "node test | tap-spec",
     "test-watch": "nodemon test | tap-spec",

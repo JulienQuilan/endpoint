@@ -44,5 +44,11 @@ export default {
       minimize: true,
       comments: false
     })
-  ].filter(Boolean)
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat'
+    }
+  }
 };

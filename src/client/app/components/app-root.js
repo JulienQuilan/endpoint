@@ -25,14 +25,14 @@ function injectGlobalStyles() {
   csjs`
   @font-face {
     font-family: 'dejavu-sans-mono--regular';
-    src: url(data:application/x-font-ttf;base64,${fonts.dejavuSansMonoRegular}),
-         url('/static/fonts/deja-vu-sans-mono--regular.ttf');
+    src: url(data:application/x-font-woff;base64,${fonts.dejavuSansMonoRegular}),
+         url('/static/fonts/deja-vu-sans-mono--regular.woff');
   }
 
   @font-face {
     font-family: 'dejavu-sans-mono--bold';
-    src: url(data:application/x-font-ttf;base64,${fonts.dejavuSansMonoBold}),
-         url('/static/fonts/deja-vu-sans-mono--bold.ttf');
+    src: url(data:application/x-font-woff;base64,${fonts.dejavuSansMonoBold}),
+         url('/static/fonts/deja-vu-sans-mono--bold.woff');
   }
   `;
 

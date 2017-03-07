@@ -1,7 +1,7 @@
 /* global window */
 /* eslint-disable no-alert */
 
-import {atomOneDark} from 'react-syntax-highlighter/dist/styles';
+import atomOneDark from 'react-syntax-highlighter/dist/styles/atom-one-dark';
 import copy from 'copy-to-clipboard';
 import Helmet from 'react-helmet';
 import LoadingHOC from 'react-loading-hoc';

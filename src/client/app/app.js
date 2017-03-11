@@ -1,4 +1,5 @@
 /* global config, document */
+/* eslint-disable no-unused-expressions */
 
 import bash from 'highlight.js/lib/languages/bash';
 import dottie from 'dottie';
@@ -14,7 +15,7 @@ import {StyletronProvider} from 'styletron-react';
 import routes from './routes';
 
 // Client-side Sentry initialization
-Raven.config(dottie.get(config, 'sentry.dsn')).install();
+Raven.config && Raven.config(dottie.get(config, 'sentry.dsn')).install();
 
 // Syntax highlighting initialization
 registerLanguage('bash', bash);

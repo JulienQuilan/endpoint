@@ -1,7 +1,7 @@
 /* global window */
 
 import React from 'react';
-import {SquareLoader} from 'halogen';
+import SquareLoader from 'halogen/SquareLoader';
 
 import {colors} from '../../styles/colors';
 import {transition} from '../../styles/general';

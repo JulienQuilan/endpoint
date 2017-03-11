@@ -48,7 +48,9 @@ export default {
   resolve: {
     alias: {
       'react': 'preact-compat',
-      'react-dom': 'preact-compat'
+      'react-dom': 'preact-compat',
+      // Don't bundle Raven if Sentry isn't used; alias it to a dummy import that's already included
+      'raven-js': clientConfig.sentry.dsn ? 'raven-js' : 'react'
     }
   }
 };

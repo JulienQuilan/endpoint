@@ -1,5 +1,5 @@
-import {Link as RouterLink} from 'react-router';
 import React from 'react';
+import RouterLink from 'react-router/lib/Link';
 import {styled} from 'styletron-react';
 
 import {colors} from '../../../styles/colors';

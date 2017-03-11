@@ -81,7 +81,7 @@
     "concurrently": "^3.2.0",
     "coveralls": "^2.11.15",
     "enzyme": "^2.6.0",
-    "eslint": "^3.3.1",
+    "eslint": "^3.17.1",
     "eslint-config-uber-jsx": "^3.0.1",
     "eslint-plugin-react": "^6.1.2",
     "istanbul": "^1.1.0-alpha.1",

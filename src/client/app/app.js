@@ -2,13 +2,14 @@
 /* eslint-disable no-unused-expressions */
 
 import bash from 'highlight.js/lib/languages/bash';
+import browserHistory from 'react-router/lib/browserHistory';
 import dottie from 'dottie';
 import {injectStyle} from 'styletron-utils';
 import js from 'highlight.js/lib/languages/javascript';
 import Raven from 'raven-js';
 import React from 'react';
 import {registerLanguage} from 'react-syntax-highlighter/dist/light';
-import {Router, browserHistory} from 'react-router';
+import Router from 'react-router/lib/Router';
 import Styletron from 'styletron-client';
 import {StyletronProvider} from 'styletron-react';
 

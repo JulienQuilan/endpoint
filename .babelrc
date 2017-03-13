@@ -4,7 +4,11 @@
     "react",
     "stage-0"
   ],
-  "plugins": [
-    "rewire"
-  ]
+  "env": {
+    "development": {
+      "plugins": [
+        "rewire"
+      ]
+    }
+  }
 }

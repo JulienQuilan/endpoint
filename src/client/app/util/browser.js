@@ -1,7 +1,8 @@
 /* global window */
 
 import browserHistory from 'react-router/lib/browserHistory';
-import url from 'url';
+import fetchPonyfill from 'unfetch';
+import urlParse from 'url-parse';
 
 /**
  * Load the specified URL after a delay.
@@ -41,11 +42,23 @@ function push(path, delay) {
  * @returns {Object} Parsed URL object.
  */
 function parseURL() {
-  return url.parse(window.location.href, true);
+  return urlParse(window.location.href, true);
+}
+
+/**
+ * Direct invocation of the fetch ponyfill.
+ *
+ * @param {String} url URL to fetch.
+ * @param {Object} opts Additional properties to attach to the request.
+ * @returns {Promise} Promise object.
+ */
+function fetch(url, opts) {
+  return fetchPonyfill(url, opts);
 }
 
 export default {
   go,
   push,
-  parseURL
+  parseURL,
+  fetch
 };

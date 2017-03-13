@@ -2,7 +2,6 @@
 
 import jsdom from 'jsdom';
 import React from 'react';
-import request from 'browser-request';
 import sinon from 'sinon';
 import test from 'tape';
 
@@ -94,17 +93,33 @@ test('Invalid delay value', (t) => {
 });
 
 test('Conflicting endpoint name', (t) => {
-  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
-    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
-    t.deepEqual(opts.json, {
+  const pushStub = sinon.stub(browser, 'push');
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(url, '/api/endpoint/add', 'Endpoint URL is correct');
+    t.equal(opts.method, 'PUT', 'HTTP method is PUT');
+    t.equal(opts.body, JSON.stringify({
       name: 'endpoint',
       data: {},
       statusCode: 200,
       delay: 100
-    }, 'JSON request body is correct');
+    }), 'JSON body is correct');
 
-    return cb(null, {statusCode: 409});
+    return {
+      then: (respFunc) => {
+        const mockResp = {
+          status: 409,
+          json: () => t.pass('JSON is parsed out of response body')
+        };
+
+        respFunc(mockResp);
+
+        return {
+          then: (jsonFunc) => jsonFunc({success: false})
+        };
+      }
+    };
   });
+
   const main = mountWithStyletron(
     <Main
       isLoading={false}
@@ -120,25 +135,43 @@ test('Conflicting endpoint name', (t) => {
 
   main.find('.btn-submit-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
+  t.notOk(pushStub.called, 'No page redirect occurs');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'an endpoint with this name already exists. ' +
     'please choose another name.', 'Message about a name conflict');
 
-  request.put.restore();
+  browser.push.restore();
+  browser.fetch.restore();
   t.end();
 });
 
 test('Bad endpoint name', (t) => {
-  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
-    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
-    t.deepEqual(opts.json, {
+  const pushStub = sinon.stub(browser, 'push');
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(url, '/api/endpoint/add', 'Endpoint URL is correct');
+    t.equal(opts.method, 'PUT', 'HTTP method is PUT');
+    t.equal(opts.body, JSON.stringify({
       name: 'endpoint',
       data: {}
-    }, 'JSON request body is correct');
+    }), 'JSON body is correct');
 
-    return cb(null, {statusCode: 400});
+    return {
+      then: (respFunc) => {
+        const mockResp = {
+          status: 400,
+          json: () => t.pass('JSON is parsed out of response body')
+        };
+
+        respFunc(mockResp);
+
+        return {
+          then: (jsonFunc) => jsonFunc({success: false})
+        };
+      }
+    };
   });
+
   const main = mountWithStyletron(
     <Main
       isLoading={false}
@@ -152,28 +185,46 @@ test('Bad endpoint name', (t) => {
 
   main.find('.btn-submit-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
+  t.notOk(pushStub.called, 'No page redirect occurs');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'the endpoint name must be between 1 and 30 ' +
     'characters in length, and must consist only of letters, numbers, dashes, and underscores.',
     'Message about invalid endpoint name');
 
-  request.put.restore();
+  browser.push.restore();
+  browser.fetch.restore();
   t.end();
 });
 
 test('JSON request data too large', (t) => {
-  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
-    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
-    t.deepEqual(opts.json, {
+  const pushStub = sinon.stub(browser, 'push');
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(url, '/api/endpoint/add', 'Endpoint URL is correct');
+    t.equal(opts.method, 'PUT', 'HTTP method is PUT');
+    t.equal(opts.body, JSON.stringify({
       name: 'endpoint',
       data: {},
       statusCode: 200,
       delay: 100
-    }, 'JSON request body is correct');
+    }), 'JSON body is correct');
 
-    return cb(null, {statusCode: 413});
+    return {
+      then: (respFunc) => {
+        const mockResp = {
+          status: 413,
+          json: () => t.pass('JSON is parsed out of response body')
+        };
+
+        respFunc(mockResp);
+
+        return {
+          then: (jsonFunc) => jsonFunc({success: false})
+        };
+      }
+    };
   });
+
   const main = mountWithStyletron(
     <Main
       isLoading={false}
@@ -189,27 +240,45 @@ test('JSON request data too large', (t) => {
 
   main.find('.btn-submit-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
+  t.notOk(pushStub.called, 'No page redirect occurs');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'the server rejected your json data because ' +
     'it was too large.', 'Message about JSON data that is too large');
 
-  request.put.restore();
+  browser.push.restore();
+  browser.fetch.restore();
   t.end();
 });
 
 test('Generic internal server error', (t) => {
-  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
-    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
-    t.deepEqual(opts.json, {
+  const pushStub = sinon.stub(browser, 'push');
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(url, '/api/endpoint/add', 'Endpoint URL is correct');
+    t.equal(opts.method, 'PUT', 'HTTP method is PUT');
+    t.equal(opts.body, JSON.stringify({
       name: 'endpoint',
       data: {},
       statusCode: 200,
       delay: 100
-    }, 'JSON request body is correct');
+    }), 'JSON body is correct');
 
-    return cb(null, {statusCode: 500});
+    return {
+      then: (respFunc) => {
+        const mockResp = {
+          status: 500,
+          json: () => t.pass('JSON is parsed out of response body')
+        };
+
+        respFunc(mockResp);
+
+        return {
+          then: (jsonFunc) => jsonFunc({success: false})
+        };
+      }
+    };
   });
+
   const main = mountWithStyletron(
     <Main
       isLoading={false}
@@ -225,27 +294,40 @@ test('Generic internal server error', (t) => {
 
   main.find('.btn-submit-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
+  t.notOk(pushStub.called, 'No page redirect occurs');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'there was an undefined server-side error. ' +
     'sorry.', 'Message about an undefined server-side error');
 
-  request.put.restore();
+  browser.push.restore();
+  browser.fetch.restore();
   t.end();
 });
 
 test('Undefined network failure', (t) => {
-  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
-    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
-    t.deepEqual(opts.json, {
+  const pushStub = sinon.stub(browser, 'push');
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(url, '/api/endpoint/add', 'Endpoint URL is correct');
+    t.equal(opts.method, 'PUT', 'HTTP method is PUT');
+    t.equal(opts.body, JSON.stringify({
       name: 'endpoint',
       data: {},
       statusCode: 200,
       delay: 100
-    }, 'JSON request body is correct');
+    }), 'JSON body is correct');
 
-    return cb('error');
+    return {
+      then: (respFunc, errFunc) => {
+        errFunc();
+
+        return {
+          then: (jsonFunc) => jsonFunc({success: false})
+        };
+      }
+    };
   });
+
   const main = mountWithStyletron(
     <Main
       isLoading={false}
@@ -261,27 +343,43 @@ test('Undefined network failure', (t) => {
 
   main.find('.btn-submit-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
+  t.notOk(pushStub.called, 'No page redirect occurs');
   t.equal(main.find('ErrorAlert').length, 1, 'ErrorAlert is displayed');
   t.equal(main.find('ErrorAlert').props().message, 'there was an undefined network failure. ' +
     'try again?', 'Message about a network failure');
 
-  request.put.restore();
+  browser.push.restore();
+  browser.fetch.restore();
   t.end();
 });
 
 test('Successful endpoint submission', (t) => {
   const pushStub = sinon.stub(browser, 'push');
-  const requestStub = sinon.stub(request, 'put', (opts, cb) => {
-    t.equal(opts.url, '/api/endpoint/add', 'Endpoint is correct');
-    t.deepEqual(opts.json, {
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(url, '/api/endpoint/add', 'Endpoint URL is correct');
+    t.equal(opts.method, 'PUT', 'HTTP method is PUT');
+    t.equal(opts.body, JSON.stringify({
       name: 'endpoint',
       data: {},
       statusCode: 200,
       delay: 100
-    }, 'JSON request body is correct');
+    }), 'JSON body is correct');
 
-    return cb(null, {statusCode: 201}, {success: true});
+    return {
+      then: (respFunc) => {
+        const mockResp = {
+          status: 201,
+          json: () => t.pass('JSON is parsed out of response body')
+        };
+
+        respFunc(mockResp);
+
+        return {
+          then: (jsonFunc) => jsonFunc({success: true})
+        };
+      }
+    };
   });
 
   jsdom.changeURL(window, 'https://endpoint.example.com/extraneous-path');
@@ -302,10 +400,10 @@ test('Successful endpoint submission', (t) => {
 
   t.equal(main.find('.endpoint-prefix').props().children, 'https://endpoint.example.com/endpoint/',
     'Endpoint prefix is parsed from browser URL');
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
   t.ok(pushStub.calledWith('/endpoint/endpoint'), 'Redirect to endpoint test page');
 
   browser.push.restore();
-  request.put.restore();
+  browser.fetch.restore();
   t.end();
 });

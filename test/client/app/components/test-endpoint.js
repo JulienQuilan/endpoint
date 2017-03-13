@@ -2,10 +2,10 @@
 
 import jsdom from 'jsdom';
 import React from 'react';
-import request from 'browser-request';
 import sinon from 'sinon';
 import test from 'tape';
 
+import browser from '../../../../src/client/app/util/browser';
 import {
   Endpoint,
   __RewireAPI__ as EndpointRewire
@@ -58,16 +58,30 @@ test('Copying endpoint URL to the clipboard', (t) => {
 test('Testing endpoint with successful response', (t) => {
   jsdom.changeURL(window, 'https://endpoint.example.com/endpoint/endpoint');
 
-  const requestStub = sinon.stub(request, 'post', (opts, cb) => {
-    t.equal(opts.url, 'https://endpoint.example.com/endpoint/endpoint',
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(opts.method, 'POST', 'HTTP method is POST');
+    t.equal(url, 'https://endpoint.example.com/endpoint/endpoint',
       'Endpoint URL is copied from browser location href');
-    t.deepEqual(opts.json, {}, 'No JSON data is passed');
 
-    const resp = {
-      getAllResponseHeaders: () => 'response headers'
+    return {
+      then: (respFunc) => {
+        const mockResp = {
+          headers: [
+            ['key', 'value']
+          ],
+          status: 200,
+          json: () => t.pass('JSON is parsed out of response body')
+        };
+
+        respFunc(mockResp);
+
+        return {
+          then: (jsonFunc) => jsonFunc({})
+        };
+      }
     };
-    return cb(null, resp, {stuff: true});
   });
+
   const endpoint = mountWithStyletron(
     <Endpoint
       isLoading={false}
@@ -80,23 +94,32 @@ test('Testing endpoint with successful response', (t) => {
 
   endpoint.find('.btn-test-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
   t.notOk(endpoint.find('.btn-test-endpoint').length, 'Test endpoint button disappears');
 
-  request.post.restore();
+  browser.fetch.restore();
   t.end();
 });
 
-test('Testing endpoint with error 404 response', (t) => {
+test('Testing endpoint with error 500 response', (t) => {
   jsdom.changeURL(window, 'https://endpoint.example.com/endpoint/endpoint');
 
-  const requestStub = sinon.stub(request, 'post', (opts, cb) => {
-    t.equal(opts.url, 'https://endpoint.example.com/endpoint/endpoint',
+  const fetchStub = sinon.stub(browser, 'fetch', (url, opts) => {
+    t.equal(opts.method, 'POST', 'HTTP method is POST');
+    t.equal(url, 'https://endpoint.example.com/endpoint/endpoint',
       'Endpoint URL is copied from browser location href');
-    t.deepEqual(opts.json, {}, 'No JSON data is passed');
 
-    return cb('error', {statusCode: 404});
+    return {
+      then: (respFunc, errFunc) => {
+        errFunc();
+
+        return {
+          then: (jsonFunc) => jsonFunc({})
+        };
+      }
+    };
   });
+
   const endpoint = mountWithStyletron(
     <Endpoint
       isLoading={false}
@@ -109,44 +132,12 @@ test('Testing endpoint with error 404 response', (t) => {
 
   endpoint.find('.btn-test-endpoint').simulate('click');
 
-  t.ok(requestStub.called, 'Network request is made');
+  t.ok(fetchStub.called, 'Network request is made');
   const alert = endpoint.find('ErrorAlert');
   t.equal(alert.length, 1, 'Error alert is displayed');
-  t.equal(alert.props().message, 'no such endpoint with this name exists.',
-    'Error about nonexistent endpoint');
-
-  request.post.restore();
-  t.end();
-});
-
-test('Testing endpoint with error 404 response', (t) => {
-  jsdom.changeURL(window, 'https://endpoint.example.com/endpoint/endpoint');
-
-  const requestStub = sinon.stub(request, 'post', (opts, cb) => {
-    t.equal(opts.url, 'https://endpoint.example.com/endpoint/endpoint',
-      'Endpoint URL is copied from browser location href');
-    t.deepEqual(opts.json, {}, 'No JSON data is passed');
-
-    return cb('error', {statusCode: 500});
-  });
-  const endpoint = mountWithStyletron(
-    <Endpoint
-      isLoading={false}
-      loading={(func) => func(() => {})}
-      params={{
-        endpoint: 'endpoint'
-      }}
-    />
-  );
-
-  endpoint.find('.btn-test-endpoint').simulate('click');
-
-  t.ok(requestStub.called, 'Network request is made');
-  const alert = endpoint.find('ErrorAlert');
-  t.equal(alert.length, 1, 'Error alert is displayed');
-  t.equal(alert.props().message, 'there was an undefined server-side there. sorry.',
+  t.equal(alert.props().message, 'there was an undefined server-side error. sorry.',
     'Error about undefined error');
 
-  request.post.restore();
+  browser.fetch.restore();
   t.end();
 });

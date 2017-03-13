@@ -44,3 +44,10 @@ test('browser.parseURL parses current URL with query string', (t) => {
 
   t.end();
 });
+
+test('browser.fetch invokes ponyfill', (t) => {
+  browser.fetch('', {});
+  t.pass('No error occurs');
+
+  t.end();
+});

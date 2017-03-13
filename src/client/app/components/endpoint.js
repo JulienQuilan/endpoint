@@ -7,7 +7,6 @@ import Helmet from 'react-helmet';
 import LoadingHOC from 'react-loading-hoc';
 import Paste from 'react-icons/lib/md/content-paste';
 import React from 'react';
-import request from 'browser-request';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/light';
 
 import Container from './container';
@@ -23,7 +22,6 @@ import {ErrorAlert, SuccessAlert} from './ui/alert';
 import browser from '../util/browser';
 
 const ERROR_GENERIC = 'errorGeneric';
-const ERROR_NONEXISTENT_ENDPOINT = 'errorNonexistentEndpoint';
 
 /**
  * Endpoint metadata page shown after successful submission of an endpoint.
@@ -41,31 +39,24 @@ export class Endpoint extends React.Component {
   }
 
   handleTestEndpoint(evt) {
-    this.props.loading((done) => {
-      request.post({
-        url: browser.parseURL().href,
-        json: {}
-      }, (err, resp = {}, responseJSON = null) => {
-        if (err && (responseJSON === null)) {
-          if (resp.statusCode === 404) {
-            this.setState({error: ERROR_NONEXISTENT_ENDPOINT});
-            return done();
-          }
-
-          this.setState({error: ERROR_GENERIC});
-          return done();
-        }
-
-        this.setState({
-          responseHeaders: resp.getAllResponseHeaders().split('\n') || [],
-          responseStatusCode: resp.statusCode || 'Unknown',
-          responseJSON
-        });
-        return done();
-      });
-    });
-
     evt.preventDefault();
+
+    return this.props.loading((done) => browser.fetch(browser.parseURL().href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((resp = {}) => {
+      this.setState({
+        responseHeaders: [...resp.headers].map((header) => `${header[0]}: ${header[1]}`),
+        responseStatusCode: resp.status || 'Unknown'
+      });
+
+      return resp.json();
+    }, () => this.setState({error: ERROR_GENERIC})).then((responseJSON) => {
+      this.setState({responseJSON});
+      return done();
+    }));
   }
 
   handleClipboardCopy() {
@@ -78,8 +69,7 @@ export class Endpoint extends React.Component {
     const {error} = this.state;
 
     const errorMessages = {
-      [ERROR_NONEXISTENT_ENDPOINT]: 'no such endpoint with this name exists.',
-      [ERROR_GENERIC]: 'there was an undefined server-side there. sorry.'
+      [ERROR_GENERIC]: 'there was an undefined server-side error. sorry.'
     };
 
     return error && (

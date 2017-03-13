@@ -2,7 +2,6 @@ import Helmet from 'react-helmet';
 import isJSON from 'is-json';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
-import request from 'browser-request';
 
 import Container from './container';
 import {Primary, PrimaryInline} from '../../styles/fonts';
@@ -67,41 +66,34 @@ export class Main extends React.Component {
       return this.setState({warn: WARN_INVALID_DELAY});
     }
 
-    return this.props.loading((done) => request.put({
-      url: '/api/endpoint/add',
-      json: {
+    return this.props.loading((done) => browser.fetch('/api/endpoint/add', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
         name,
         data: JSON.parse(data),
         ...(statusCode && {statusCode}),
         ...(delay && {delay})
-      }
-    }, (err, resp = {}, body = {}) => {
-      if (err || resp.statusCode !== 201 || !body.success) {
-        if (resp.statusCode === 400) {
-          this.setState({error: ERROR_BAD_INPUT});
-          return done();
-        }
+      })
+    }).then((resp = {}) => {
+      const errors = {
+        400: ERROR_BAD_INPUT,
+        409: ERROR_CONFLICT,
+        413: ERROR_TOO_LARGE,
+        500: ERROR_SERVER
+      };
 
-        if (resp.statusCode === 409) {
-          this.setState({error: ERROR_CONFLICT});
-          return done();
-        }
+      this.setState({error: errors[resp.status]});
 
-        if (resp.statusCode === 413) {
-          this.setState({error: ERROR_TOO_LARGE});
-          return done();
-        }
-
-        if (resp.statusCode === 500) {
-          this.setState({error: ERROR_SERVER});
-          return done();
-        }
-
-        this.setState({error: ERROR_NETWORK_FAILURE});
-        return done();
+      return resp.json();
+    }, () => this.setState({error: ERROR_NETWORK_FAILURE})).then((body = {}) => {
+      if (body.success) {
+        return browser.push(`/endpoint/${name}`);
       }
 
-      return browser.push(`/endpoint/${name}`);
+      return done();
     }));
   }
 

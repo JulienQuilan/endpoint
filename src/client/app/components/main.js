@@ -71,6 +71,7 @@ export class Main extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({
         name,
         data: JSON.parse(data),

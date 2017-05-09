@@ -45,7 +45,8 @@ export class Endpoint extends React.Component {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      credentials: 'include'
     }).then((resp = {}) => {
       this.setState({
         responseHeaders: [...resp.headers].map((header) => `${header[0]}: ${header[1]}`),

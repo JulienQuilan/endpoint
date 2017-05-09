@@ -40,7 +40,7 @@ app.use(middleware.response.bind(null, ctx));
 app.put('/api/endpoint/add', util.withRequestJSON(ctx, api.endpoint.add));
 
 /* View endpoints */
-// app.get('/endpoint/:endpoint', view.endpoint.bind(null, ctx));
+app.get('/endpoint/:endpoint', view.endpoint.bind(null, ctx));
 app.post('/endpoint/:endpoint', view.endpoint.bind(null, ctx));
 app.get('*', view.main.bind(null, ctx));
 

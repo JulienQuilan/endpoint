@@ -12,7 +12,7 @@
     "start": "node index.js",
     "start-watch": "nodemon index.js",
     "dev": "concurrently --kill-others --prefix name --prefix-colors cyan.bold,yellow.bold,magenta.bold --names HTTP,JS,HTML 'npm run start-watch' 'npm run build-js-watch' 'npm run build-html-watch'",
-    "lint": "eslint src test config",
+    "lint": "eslint --max-warnings 0 src test config",
     "test": "node test | tap-spec",
     "test-watch": "nodemon test | tap-spec",
     "cover": "istanbul cover test --print detail",

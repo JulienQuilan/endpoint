@@ -30,9 +30,6 @@ function sendEndpoint(res, doc) {
  * @param {Object} res Express response object
  */
 function handler(ctx, req, res) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
   // Bypass the database if the document is cached in-memory
   const cachedDoc = ctx.cache.get(req.params.endpoint);
   if (cachedDoc) {

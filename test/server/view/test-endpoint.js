@@ -3,37 +3,6 @@ import test from 'tape';
 
 import handler from '../../../src/server/view/endpoint';
 
-test('Endpoint CORS headers allow any origin', (t) => {
-  const mockCtx = {
-    db: {
-      endpoint: {
-        findOne(opts, cb) {}
-      }
-    },
-    cache: {
-      get: sinon.spy()
-    }
-  };
-  const mockReq = {
-    params: {
-      endpoint: 'endpoint'
-    }
-  };
-  const mockRes = {
-    header: sinon.spy()
-  };
-
-  handler(mockCtx, mockReq, mockRes);
-
-  t.ok(mockCtx.cache.get.calledWith('endpoint'), 'Attempt to look up endpoint in cache');
-  t.ok(mockRes.header.calledWith('Access-Control-Allow-Origin', '*'),
-    'CORS Access-Control-Allow-Origin header is set');
-  t.ok(mockRes.header.calledWith('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'),  // eslint-disable-line max-len
-    'Access-Control-Allow-Headers CORS header is set');
-
-  t.end();
-});
-
 test('Database error returns HTTP 500', (t) => {
   const mockCtx = {
     db: {

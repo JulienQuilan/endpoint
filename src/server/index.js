@@ -2,6 +2,7 @@
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import Express from 'express';
 import morgan from 'morgan';
 import path from 'path';
@@ -29,6 +30,7 @@ app.use('/static', Express.static(path.resolve(__dirname, '../client/static')));
 
 /* Express middleware */
 app.use(raven.requestHandler());
+app.use(cors());
 app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(bodyParser.json({type: '*/*', limit: '10mb'}));

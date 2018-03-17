@@ -1,0 +1,6 @@
+curl -F 'client_id=acec744a56114f3696261c061ec371bf' \
+    -F 'client_secret=8884ffe19aea47739c8fc089cf043ff6 ' \
+    -F 'grant_type=authorization_code' \
+    -F 'redirect_uri=https://4piliers.org' \
+    -F 'code=a1f2965d4bc94e2b9924f0a477190f1d' \
+    https://api.instagram.com/oauth/access_token
